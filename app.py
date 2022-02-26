@@ -7,6 +7,8 @@ from sklearn import datasets
 #ダッシュボードの生成
 def main():
     st.set_page_config(layout="wide")
+    #タイトルの表示
+    st.title("DashBoard")
 
     #データの読み込み
     file = st.sidebar.file_uploader("Upload csv file", type="csv")
@@ -15,20 +17,27 @@ def main():
         #読み込んだデータをデータフレーム化
         df = pd.read_csv(file, encoding="utf_8")
         print(df)
-
+        print(df.dtypes)
         #特徴量名のリストを作成する
-        X = df.iloc[:,:-1]
-        print(X)
-        y = df.iloc[:,[-1]]
-        print(y)
-        feature_list = [feature for feature in X.columns]
+        feature_list = [feature for feature in df.columns]
         print(feature_list)
-        target_name = y.columns.values
-        print(target_name)
 
-        #サイドバーの生成
+        #サイドバーのレイアウト
         st.sidebar.markdown("## Settings")
+        #ピックアップしたい特徴量の選択
         feature_selected = st.sidebar.selectbox("Feature Values", feature_list)
+        #予測対象の特徴量の選択
+        target = st.sidebar.selectbox("Target", feature_list)
+        #予測対象のデータ個数のカウント
+        target_count = df[target].value_counts().reset_index(name="count")
+        fig_target = go.Figure(data=[go.Pie(labels=target_count["index"], values=target_count["count"], hole=.3)])
+        fig_target.update_layout(showlegend=False, height=200, margin={'l': 20, 'r': 60, 't': 0, 'b': 0})
+        fig_target.update_traces(textposition='inside', textinfo='label+percent')
+
+        #予測対象のデータ個数をグラフ表示
+        st.sidebar.markdown("## Target Percentage")
+        st.sidebar.plotly_chart(fig_target, use_container_width=True)
+        #print(target_count)
 
         #データフレームの表示
         st.markdown("Data Frame")
@@ -43,7 +52,7 @@ def main():
         st.text(df[feature_selected].isnull().sum())
 
         #コンテンツのグラフの作成
-        df_feature = df.groupby(target_name[0])[feature_selected].count().reset_index()
+        #df_feature = df.groupby(target_name[0])[feature_selected].count().reset_index()
         #st.markdown(df_feature)
 
 
