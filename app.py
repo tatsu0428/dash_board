@@ -10,7 +10,8 @@ from pandas.api.types import is_numeric_dtype
 def main():
     st.set_page_config(layout="wide")
     #タイトルの表示
-    st.title("DashBoard")
+    st.title("DashBoard using Streamlit")
+    st.text("Created by Tatsuya Nishizawa")
 
     #データの読み込み
     file = st.sidebar.file_uploader("Upload csv file", type="csv")
@@ -27,7 +28,7 @@ def main():
         #サイドバーのレイアウト
         st.sidebar.markdown("## Settings")
         #ピックアップしたい特徴量の選択
-        feature_selected = st.sidebar.selectbox("Feature Values", feature_list)
+        feature_selected = st.sidebar.selectbox("Feature", feature_list)
         #予測対象の特徴量の選択
         target = st.sidebar.selectbox("Target", feature_list, index=1)
         #予測対象のデータ個数のカウント
@@ -42,26 +43,38 @@ def main():
         #print(target_count)
 
         #データフレームの表示
-        st.markdown("## Data Frame")
+        st.subheader("Data Frame")
         st.dataframe(df.head())
 
         if is_numeric_dtype(df[feature_selected]):
-            #要約統計量の表示
-            st.markdown("Summary Statistics")
-            st.dataframe(df[feature_selected].describe())
-
-            #欠損値の数を表示
-            st.markdown("Missing Value")
-            st.text(df[feature_selected].isnull().sum())
+            #選択した特徴量が数値データであった場合
+            st.subheader("Data of " + str(feature_selected))
+            col1, col2 = st.columns(2)
+            with col1:
+                #要約統計量の表示
+                st.markdown("Summary Statistics")
+                st.dataframe(df[feature_selected].describe())
+            
+            with col2:
+                #選択したカテゴリカル関数の欠損値の数を表示
+                st.metric(label="Missing Value", value=df[feature_selected].isnull().sum())
+            
         else:
-            #選択したカテゴリカル変数の個数をカウントし表示
-            cat_count = df.groupby(feature_selected).size().reset_index(name="count")
-            st.dataframe(cat_count)
-
-            #選択したカテゴリカル関数の欠損値の数を表示
-            st.text(df[feature_selected].isnull().sum())
-
+            #選択した特徴量がカテゴリーデータであった場合
+            st.subheader("Data of " + str(feature_selected))
+            col1, col2 = st.columns(2)
+            with col1:
+                #選択したカテゴリカル変数の個数をカウントし表示
+                st.markdown("Quantity")
+                cat_count = df.groupby(feature_selected).size().reset_index(name="count")
+                st.dataframe(cat_count)
+            
+            with col2:
+                #選択したカテゴリカル関数の欠損値の数を表示
+                st.metric(label="Missing Value", value=df[feature_selected].isnull().sum())
+            
             #選択したカテゴリカル変数の分布のグラフを表示
+            st.markdown("Distribution")
             df_cat = df.groupby([feature_selected, target]).size().reset_index(name="count")
             fig_cat = go.Figure()
             for i in target_count["index"]:
