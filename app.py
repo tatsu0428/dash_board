@@ -19,18 +19,15 @@ def main():
     if file != None:
         #読み込んだデータをデータフレーム化
         df = pd.read_csv(file, encoding="utf_8")
-        print(df)
-        print(df.dtypes)
         #特徴量名のリストを作成する
         feature_list = [feature for feature in df.columns]
-        print(feature_list)
 
         #サイドバーのレイアウト
         st.sidebar.markdown("## Settings")
-        #ピックアップしたい特徴量の選択
-        feature_selected = st.sidebar.selectbox("Feature", feature_list)
         #予測対象の特徴量の選択
         target = st.sidebar.selectbox("Target", feature_list, index=1)
+        #ピックアップしたい特徴量の選択
+        feature_selected = st.sidebar.selectbox("Feature", feature_list)
         #予測対象のデータ個数のカウント
         target_count = df[target].value_counts().reset_index(name="count")
         fig_target = go.Figure(data=[go.Pie(labels=target_count["index"], values=target_count["count"], hole=.3)])
@@ -64,11 +61,12 @@ def main():
             fig_num = go.Figure()
             for i in target_count["index"]:
                 num = df[df[target] == i]
-                print(num)
-                fig_num.add_trace(go.Histogram(x=num[feature_selected]))
+                fig_num.add_trace(go.Histogram(name=(str(target) + " = " + str(i)), x=num[feature_selected]))
             fig_num.update_layout(height=300, width=500, margin={'l': 20, 'r': 20, 't': 0, 'b': 0}, legend=dict(yanchor="top", y=0.99, xanchor="right", x=0.99), barmode="stack")
             fig_num.update_xaxes(title_text=None)
             fig_num.update_yaxes(title_text='# of samples')
+
+            st.plotly_chart(fig_num, use_container_width=True)
 
             
         else:
@@ -91,7 +89,7 @@ def main():
             fig_cat = go.Figure()
             for i in target_count["index"]:
                 cat = df_cat[df_cat[target] == i]
-                fig_cat.add_trace(go.Bar(name=str(i), x=cat[feature_selected], y=cat["count"]))
+                fig_cat.add_trace(go.Bar(name=(str(target) + " = " + str(i)), x=cat[feature_selected], y=cat["count"]))
             fig_cat.update_layout(height=300, width=500, margin={'l': 20, 'r': 20, 't': 0, 'b': 0}, legend=dict(yanchor="top", y=0.99, xanchor="right", x=0.99), barmode='stack')
             fig_cat.update_xaxes(title_text=None)
             fig_cat.update_yaxes(title_text='# of samples')
