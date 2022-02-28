@@ -51,13 +51,25 @@ def main():
             st.subheader("Data of " + str(feature_selected))
             col1, col2 = st.columns(2)
             with col1:
-                #要約統計量の表示
+                #選択した特徴量の要約統計量の表示
                 st.markdown("Summary Statistics")
                 st.dataframe(df[feature_selected].describe())
             
             with col2:
-                #選択したカテゴリカル関数の欠損値の数を表示
+                #選択した特徴量の欠損値の数を表示
                 st.metric(label="Missing Value", value=df[feature_selected].isnull().sum())
+            
+            #選択した特徴量のヒストグラムを表示
+            st.markdown("Distribution")
+            fig_num = go.Figure()
+            for i in target_count["index"]:
+                num = df[df[target] == i]
+                print(num)
+                fig_num.add_trace(go.Histogram(x=num[feature_selected]))
+            fig_num.update_layout(height=300, width=500, margin={'l': 20, 'r': 20, 't': 0, 'b': 0}, legend=dict(yanchor="top", y=0.99, xanchor="right", x=0.99), barmode="stack")
+            fig_num.update_xaxes(title_text=None)
+            fig_num.update_yaxes(title_text='# of samples')
+
             
         else:
             #選択した特徴量がカテゴリーデータであった場合
