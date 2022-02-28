@@ -63,7 +63,7 @@ def main():
                 num = df[df[target] == i]
                 fig_num.add_trace(go.Histogram(name=(str(target) + " = " + str(i)), x=num[feature_selected]))
             fig_num.update_layout(height=300, width=500, margin={'l': 20, 'r': 20, 't': 0, 'b': 0}, legend=dict(yanchor="top", y=0.99, xanchor="right", x=0.99), barmode="stack")
-            fig_num.update_xaxes(title_text=None)
+            fig_num.update_xaxes(title_text=feature_selected)
             fig_num.update_yaxes(title_text='# of samples')
 
             st.plotly_chart(fig_num, use_container_width=True)
