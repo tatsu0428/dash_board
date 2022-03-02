@@ -4,13 +4,13 @@
 
 This dashboard is available https://share.streamlit.io/tatsu0428/dash_board/main/app.py.
 
-# DEMO
+# Example of Use
 
 ![share streamlit io_tatsu0428_dash_board_main_app py](https://user-images.githubusercontent.com/84188861/156354636-1b5d5a83-23f4-4b63-a04d-59dbdea3260d.png)
  
 # Features
  
-"hoge"のセールスポイントや差別化などを説明する
+"DashBoard using Streamlit" is made using Streamlit. Streamlit is a framework that allows to build applications using only python. (https://streamlit.io/)
  
 # Requirement
 
