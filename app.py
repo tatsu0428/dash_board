@@ -13,6 +13,7 @@ def main():
     st.title("DashBoard using Streamlit")
     #制作者の表示
     st.text("Created by Tatsuya Nishizawa")
+    #ダッシュボードの説明の表示
     st.markdown("This dashboard is for classification data. You can check the summary statistics, distribution, missing values, etc. of the uploaded dataset.")
 
     #データの読み込み
