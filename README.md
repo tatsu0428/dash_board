@@ -10,7 +10,9 @@ This dashboard is available https://share.streamlit.io/tatsu0428/dash_board/main
  
 # Features
  
-"DashBoard using Streamlit" is made using Streamlit. Streamlit is a framework that allows to build applications using only python. (https://streamlit.io/)
+"DashBoard using Streamlit" is made using Streamlit. 
+
+Streamlit is a framework that allows to build applications using only python. (https://streamlit.io/)
  
 # Requirement
 
