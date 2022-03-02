@@ -48,9 +48,10 @@ CSV files larger than 200 MB cannot be read.
 
 * Tatsuya NISHIZAWA
 
-#　Reference
-https://docs.streamlit.io/
-https://sakizo-blog.com/158/
+# 　Reference
+
+* https://docs.streamlit.io/
+* https://sakizo-blog.com/158/
 
 # License
 
