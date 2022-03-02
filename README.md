@@ -1,6 +1,7 @@
 # DashBoard using Streamlit
 
 "DashBoard using Streamlit" is for classification data. You can check the summary statistics, distribution, missing values, etc. of the uploaded dataset.
+This dashboard is available https://share.streamlit.io/tatsu0428/dash_board/main/app.py.
 
 # DEMO
 
