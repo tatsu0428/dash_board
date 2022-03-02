@@ -11,10 +11,12 @@ def main():
     st.set_page_config(layout="wide")
     #タイトルの表示
     st.title("DashBoard using Streamlit")
+    #制作者の表示
     st.text("Created by Tatsuya Nishizawa")
+    st.markdown("This dashboard is for classification data. You can check the summary statistics, distribution, missing values, etc. of the uploaded dataset.")
 
     #データの読み込み
-    file = st.sidebar.file_uploader("Upload csv file", type="csv")
+    file = st.sidebar.file_uploader("Upload CSV File", type="csv")
     #csvファイルが読み込まれた後，実行
     if file != None:
         #読み込んだデータをデータフレーム化
@@ -55,6 +57,8 @@ def main():
             with col2:
                 #選択した特徴量の欠損値の数を表示
                 st.metric(label="Missing Value", value=df[feature_selected].isnull().sum())
+                #欠損値の割合を表示
+                st.metric(label="Percentage of Missing Value", value=str(round((df[feature_selected].isnull().sum() / len(df))*100, 2)) + " %")
             
             #選択した特徴量のヒストグラムを表示
             st.markdown("Distribution")
@@ -82,6 +86,8 @@ def main():
             with col2:
                 #選択したカテゴリカル関数の欠損値の数を表示
                 st.metric(label="Missing Value", value=df[feature_selected].isnull().sum())
+                #欠損値の割合を表示
+                st.metric(label="Percentage of Missing Value", value=str(round((df[feature_selected].isnull().sum() / len(df))*100, 2)) + " %")
             
             #選択したカテゴリカル変数の分布のグラフを表示
             st.markdown("Distribution")
@@ -95,6 +101,13 @@ def main():
             fig_cat.update_yaxes(title_text='# of samples')
             
             st.plotly_chart(fig_cat, use_container_width=True)
+
+    else:
+        #ダッシュボードの使い方を表示
+        st.subheader("How to Use")
+        st.markdown("1. Upload the CSV file to be checked")
+        st.markdown("2. Set the target")
+        st.markdown("3. Set the feature to be checked")
 
 
 if __name__ == "__main__":
